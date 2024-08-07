@@ -4,12 +4,21 @@
 			<a-scene
 				vr-mode-ui="enabled: false"
 				arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
-				<a-text
-					value="This content will always face you."
-					look-at="[gps-camera]"
-					scale="120 120 120"
-					gps-entity-place="latitude: 46.992732; longitude: 6.9293937;"></a-text>
-				<a-camera gps-camera rotation-reader> </a-camera>
+				<a-entity
+					gps-new-entity-place="latitude: 46.7875967; longitude: 6.636881"
+					scale="0.5 0.5 0.5"
+					rotation="0 0 0"
+					look-at="[gps-new-camera]"
+					gltf-model="./public/windTurbine.glb"
+					rotate-this-with-the-compass-readings></a-entity>
+				<a-camera
+					gps-new-camera="gpsMinDistance: 5"
+					rotation-reader
+					rotation
+					scale
+					visible
+					look-control
+					wasd-control></a-camera>
 			</a-scene>
 		</template>
 		<!-- Button to return to the home page -->
