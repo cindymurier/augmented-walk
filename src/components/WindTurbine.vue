@@ -14,8 +14,6 @@
 				rotate-this-with-the-compass-readings></a-entity>
 			<a-camera gps-new-camera="gpsMinDistance: 5" rotation-reader></a-camera>
 		</a-scene>
-		<!-- Bouton pour retourner à la page d'accueil -->
-		<button @click="$router.push('/')">Return to Home</button>
 	</div>
 </template>
 

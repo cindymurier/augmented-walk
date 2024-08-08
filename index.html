@@ -22,24 +22,5 @@
 	<body>
 		<div id="app"></div>
 		<script type="module" src="/src/main.js"></script>
-
-		<div id="ar-container">
-			<a-scene
-				vr-mode-ui="enabled: false"
-				arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false"
-				renderer="antialias: true; alpha: true">
-				<a-entity
-					v-if="userPosition"
-					:gps-new-entity-place="`latitude: ${userPosition.latitude}; longitude: ${userPosition.longitude}`"
-					scale="0.5 0.5 0.5"
-					rotation="0 0 0"
-					look-at="[gps-new-camera]"
-					gltf-model="/windTurbine.glb"
-					rotate-this-with-the-compass-readings></a-entity>
-				<a-camera gps-new-camera="gpsMinDistance: 5" rotation-reader></a-camera>
-			</a-scene>
-			<!-- Bouton pour retourner à la page d'accueil -->
-			<button @click="$router.push('/')">Return to Home</button>
-		</div>
 	</body>
 </html>
