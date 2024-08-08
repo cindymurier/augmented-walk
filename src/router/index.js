@@ -4,9 +4,9 @@ import Compass from "../components/Compass.vue";
 import WindTurbine from "../components/WindTurbine.vue";
 
 const routes = [
-	{ path: "/", component: Home },
-	{ path: "/compass", component: Compass },
-	{ path: "/wind-turbine", component: WindTurbine },
+	{ path: "/", name: "Home", component: Home },
+	{ path: "/compass", name: "Compass", component: Compass },
+	{ path: "/wind-turbine", name: "WindTurbine", component: WindTurbine },
 ];
 
 const router = createRouter({

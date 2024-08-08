@@ -6,12 +6,40 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>Augmented Walk</title>
-		<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-		<script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-		<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+		<!-- A-Frame itself -->
+		<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+
+		<!-- Pure three.js code that the A-Frame components use for location-based AR -->
+		<script
+			type="text/javascript"
+			src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js"></script>
+
+		<!-- AR.js A-Frame components -->
+		<script
+			type="text/javascript"
+			src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 	</head>
 	<body>
 		<div id="app"></div>
 		<script type="module" src="/src/main.js"></script>
+
+		<div id="ar-container">
+			<a-scene
+				vr-mode-ui="enabled: false"
+				arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false"
+				renderer="antialias: true; alpha: true">
+				<a-entity
+					v-if="userPosition"
+					:gps-new-entity-place="`latitude: ${userPosition.latitude}; longitude: ${userPosition.longitude}`"
+					scale="0.5 0.5 0.5"
+					rotation="0 0 0"
+					look-at="[gps-new-camera]"
+					gltf-model="/windTurbine.glb"
+					rotate-this-with-the-compass-readings></a-entity>
+				<a-camera gps-new-camera="gpsMinDistance: 5" rotation-reader></a-camera>
+			</a-scene>
+			<!-- Bouton pour retourner à la page d'accueil -->
+			<button @click="$router.push('/')">Return to Home</button>
+		</div>
 	</body>
 </html>

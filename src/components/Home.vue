@@ -1,3 +1,9 @@
+<script>
+export default {
+	name: "Home",
+};
+</script>
+
 <template>
 	<h1>Home</h1>
 	<div>
@@ -5,12 +11,6 @@
 		<button @click="$router.push('/wind-turbine')">Show Wind Turbine AR</button>
 	</div>
 </template>
-
-<script>
-export default {
-	name: "Home",
-};
-</script>
 
 <style>
 button {
