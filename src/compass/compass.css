@@ -1,0 +1,107 @@
+#info {
+	background-color: #fee;
+	box-shadow: 0 0 1em 1px rgba(0, 0, 0, 0.25);
+	color: #006;
+	font-size: small;
+	margin: 1em;
+	max-width: 70em;
+	padding: 1em;
+	max-height: 700;
+	max-width: 700;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 500;
+	height: 500;
+}
+
+#finished {
+	background-color: #fee;
+	box-shadow: 0 0 1em 1px rgba(0, 0, 0, 0.25);
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 300px;
+	height: 200px;
+	display: block;
+}
+
+.hidden {
+	display: none !important;
+}
+
+#next {
+	background-color: rgb(209, 69, 69);
+	box-shadow: 0 0 1em 1px rgba(0, 0, 0, 0.25);
+	color: rgb(241, 241, 250);
+	font-size: medium;
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	width: 100;
+	height: 30;
+}
+
+#destinations {
+	background-color: #fee;
+	box-shadow: 0 0 1em 1px rgba(0, 0, 0, 0.25);
+	color: #006;
+	font-size: small;
+	margin: 1em;
+	max-width: 70em;
+	padding: 1em;
+	max-height: 700;
+	max-width: 700;
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 500;
+	height: 500;
+}
+
+#mainCanvas {
+	background-color: rgb(173, 173, 173);
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100vh;
+	width: 100vw;
+	display: block;
+}
+
+/* https://codepen.io/iPawan/pen/oNejjE */
+
+.flashit {
+	color: rgb(252, 0, 0);
+	-webkit-animation: flash linear 1s infinite;
+	animation: flash linear 1s infinite;
+}
+
+@-webkit-keyframes flash {
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.1;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes flash {
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.1;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
