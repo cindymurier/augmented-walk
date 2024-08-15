@@ -1,0 +1,24 @@
+{
+	"name": "augmented-walk",
+	"version": "1.0.0",
+	"description": "",
+	"browserslist": "> 0.25%, not dead",
+	"scripts": {
+		"dev": "parcel src/index.html",
+		"build": "parcel build src/index.html"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/cindymurier/augmented-walk.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/cindymurier/augmented-walk/issues"
+	},
+	"homepage": "https://github.com/cindymurier/augmented-walk#readme",
+	"devDependencies": {
+		"parcel": "^2.12.0"
+	}
+}
