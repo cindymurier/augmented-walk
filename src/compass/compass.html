@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<title>Compass</title>
+
+		<link rel="stylesheet" href="./compass.css" />
+
+		<script type="text/javascript" src="./goute.js"></script>
+		<script type="text/javascript" src="./cercle.js"></script>
+		<script type="text/javascript" src="./compass.js"></script>
+
+		<script>
+			window.onload = () => {
+				initialize("mainCanvas");
+				setInterval(() => {
+					refresh();
+				}, 100);
+			};
+		</script>
+	</head>
+
+	<body>
+		<canvas id="mainCanvas" width="1000" height="1000"></canvas>
+
+		<div id="finished" class="hidden">
+			<span id="message"></span>
+			<button id="next" onclick="next();">Next</button>
+		</div>
+
+		<div id="info"></div>
+
+		<div id="destinations"></div>
+	</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Compass</title>
+		<style>
+			.info {
+				background-color: #ffe;
+				box-shadow: 0 0 1em 1px rgba(0, 0, 0, 0.25);
+				color: #006;
+				font-size: x-small;
+				margin: 1em;
+				max-width: 70em;
+				padding: 1em;
+				max-height: 700px;
+				max-width: 700px;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 500px;
+				height: 500px;
+			}
+
+			body {
+				margin: 0;
+				padding: 0;
+				overflow: hidden; /* Prevent scrollbars from appearing */
+			}
+
+			canvas {
+				display: block; /* Removes the default margin */
+			}
+		</style>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+		<script src="cercle.js"></script>
+		<script>
+			let unCercle, unCercle2;
+
+			function setup() {
+				createCanvas(1200, 600);
+				unCercle = createCircle(300, 200, 100);
+				unCercle2 = createCircle(100, 100, 50);
+				unCercle2.setMovement(2, 0); // Mouvement vers la droite
+			}
+
+			function draw() {
+				background(173); // Efface le canevas avec une couleur grise
+
+				// Gérer le rebond contre les murs
+				if (
+					unCercle2.x + unCercle2.size > width ||
+					unCercle2.x - unCercle2.size < 0
+				) {
+					unCercle2.setMovement(-unCercle2.movement.dx, 0);
+				}
+
+				displayCircles();
+			}
+		</script>
+	</head>
+	<body>
+		<div class="info">Hello</div>
+	</body>
+</html>
