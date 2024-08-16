@@ -1,5 +1,6 @@
 let canvas;
 let ctx;
+//pour avoir un événement toute les secondes
 let tickTime = 0;
 let fake_north = 0;
 let canvas_rotation = 0;
@@ -8,8 +9,8 @@ const goalGoute = new goute(0, 0, 250); // La goute "but"
 const goutes = []; // Les quesques goutes (4) qui bougent
 
 const currentLocation = {
-	longitude: 12345678,
-	latitude: 987654,
+	longitude: 0,
+	latitude: 0,
 };
 
 const destinations = [
@@ -65,13 +66,12 @@ const destinations = [
 	},
 ];
 
+//avoir uniquement l'écran qui bouge
 function rotateCanvas(angleDeg) {
-	canvas_rotation = angleDeg;
+	canvas_rotation = angleDeg; // juste pour info
+	ctx.translate(canvas.width / 2, canvas.height / 2);
 	ctx.rotate((angleDeg * Math.PI) / 180);
-}
-
-function translateCanvas(x, y) {
-	ctx.translate(x, y);
+	ctx.translate(-canvas.width / 2, -canvas.height / 2);
 }
 
 function clearCanvas() {
@@ -88,8 +88,7 @@ function next() {
 
 function setDestination(name, next = false) {
 	let takeNext = false;
-	for (let i = 0, len = destinations.length; i < len; i++) {
-		oneDest = destinations[i];
+	for (let oneDest of destinations) {
 		if (takeNext || oneDest.name == name) {
 			if (next) {
 				next = false;
@@ -151,7 +150,7 @@ function arrivee() {
 	butAtteint = true;
 	goalGoute.setPosition(canvas.width / 2, canvas.height / 2);
 
-	goutes.length = 0;
+	goutes.length = 0; // On vide le tableau des goutes
 	window.localStorage.setItem(
 		"currentDestination",
 		JSON.stringify({ name: currentDestination.name, decouvert: true })
@@ -166,6 +165,7 @@ function setCurrentLocation(location) {
 
 	let distance = Math.round(distanceToDest(currentDestination));
 	if (distance < 5) {
+		// a 5 metres du but, on est au but !
 		currentLocation.latitude = currentDestination.latitude;
 		currentLocation.longitude = currentDestination.longitude;
 		arrivee();
@@ -292,10 +292,10 @@ function initialize(canvasId) {
 	window.onresize = function () {
 		ctx.canvas.width = window.innerWidth;
 		ctx.canvas.height = window.innerHeight;
+		for (var uneGoute of goutes) {
+			uneGoute.center.x = canvas.width / 2;
+		}
 	};
-
-	centerX = ctx.canvas.width / 2;
-	centerY = ctx.canvas.height / 2;
 
 	let html = '<button onclick="setNorth();">Set North</button><br></br></br>';
 	html +=
@@ -360,10 +360,10 @@ function move() {
 
 function positionGoutes() {
 	// Let's assume 1/2 the size of the device (tablet) is 20 meters.
-	let distance = Math.round(distanceToDest(currentDestination));
+	let distancePourTaille = Math.round(distanceToDest(currentDestination));
 
 	const nbGouteVisible = 2;
-	this.deviceDistanceGoute = canvas.height / (2 * nbGouteVisible);
+	this.deviceDistanceGoute = canvas.height / 2 / nbGouteVisible;
 	/*
 	 * Créations des goutes qui bougent :
 	 */
@@ -372,7 +372,7 @@ function positionGoutes() {
 		let uneGoute = new goute(
 			canvas.width / 2,
 			canvas.height / 2 - i * this.deviceDistanceGoute,
-			getGouteSize(distance)
+			getGouteSize(distancePourTaille)
 		);
 		uneGoute.setMovement(0, 2);
 		goutes.push(uneGoute);
@@ -390,46 +390,21 @@ function refresh() {
 
 	showInfos();
 
-	translateCanvas(canvas.width / 2, canvas.height / 2);
 	rotateCanvas(
 		angleToDest(currentDestination) - (deviceOrientation - fake_north)
 	);
-	translateCanvas(-canvas.width / 2, -canvas.height / 2);
-
-	ctx.shadowOffsetX = 5;
-	ctx.shadowOffsetY = -5;
-	ctx.shadowBlur = 10;
-	ctx.shadowColor = "black";
-
-	let grad = ctx.createRadialGradient(
-		canvas.width / 2,
-		canvas.height / 2,
-		0,
-		canvas.width / 2,
-		canvas.height / 2,
-		25
-	);
-	grad.addColorStop(0, "black");
-	grad.addColorStop(1, "red");
 
 	ctx.beginPath();
-	ctx.fillStyle = grad;
-	ctx.arc(canvas.width / 2, canvas.height / 2, 40, 0, 2 * Math.PI);
+	ctx.fillStyle = "rgba(255, 0, 0, 0.5)"; // Rouge avec 50% de transparence
+	ctx.arc(canvas.width / 2, canvas.height / 2, 80, 0, 2 * Math.PI);
 	ctx.fill();
 	ctx.closePath();
 
-	ctx.beginPath();
-	ctx.strokeStyle = "rgb(128, 0, 0)";
-	ctx.lineWidth = 3;
-	ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, 2 * Math.PI);
-	ctx.stroke();
-	ctx.closePath();
-
 	for (let uneGoute of goutes) {
-		let distance = Math.round(distanceToDest(currentDestination));
+		let distancePourTaille = Math.round(distanceToDest(currentDestination));
 		if (uneGoute.center.y > canvas.height / 2) {
 			uneGoute.setMovement(0, 0);
-			uneGoute.schrink();
+			uneGoute.disapear();
 		}
 
 		if (uneGoute.getSize() <= 1) {
@@ -437,7 +412,7 @@ function refresh() {
 			let uneGoute = new goute(
 				canvas.width / 2,
 				canvas.height / 2 - 4 * this.deviceDistanceGoute,
-				getGouteSize(distance)
+				getGouteSize(distancePourTaille)
 			);
 			uneGoute.setMovement(0, 2);
 			goutes.push(uneGoute);
@@ -445,7 +420,7 @@ function refresh() {
 		}
 		// Ne pas afficher les goutes "sous" la goal goute
 		if (uneGoute.center.y > goalGoute.center.y + goalGoute.size) {
-			uneGoute.setSize(getGouteSize(distance));
+			uneGoute.setSize(getGouteSize(distancePourTaille));
 			uneGoute.display(ctx);
 		}
 	}
@@ -454,6 +429,20 @@ function refresh() {
 
 	// Reset transformation matrix to the identity matrix
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+	//rond blanc au centre
+	ctx.beginPath();
+	ctx.fillStyle = "#FFFFFF";
+	ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, 2 * Math.PI);
+	ctx.fill();
+	ctx.closePath();
+
+	//rond rouge au centre
+	ctx.beginPath();
+	ctx.fillStyle = "#FF0000";
+	ctx.arc(canvas.width / 2, canvas.height / 2, 40, 0, 2 * Math.PI);
+	ctx.fill();
+	ctx.closePath();
 }
 
 function getGouteSize(distanceToDest) {

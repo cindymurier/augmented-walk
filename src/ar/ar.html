@@ -4,13 +4,16 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Augmented reality</title>
-		<link rel="stylesheet" href="../style.css" />
-		
-		<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+		<link rel="stylesheet" href="./ar.css" />
 		
 		<script
-			type="text/javascript"
-			src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+		type="text/javascript"
+		src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+
+
+	<script
+		type="text/javascript"
+		src="https://github.com/AR-js-org/AR.js/releases/download/3.4.5/aframe-ar.js"></script>
 
 			
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,7 +33,7 @@
 	<body >
 		
 		
-		<div class="main" id="ar">
+		<div class="ar" id="ar">
 			<!-- <a-scene embedded vr-mode-ui='enabled: false'
 				arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
 				renderer='antialias: true; alpha: true'>
@@ -39,7 +42,7 @@
 			<a-camera gps-new-camera='gpsMinDistance: 5' rotation-reader rotation scale visible look-control
 					wasd-control> </a-camera>
 
-				<a-entity gps-new-entity-place="latitude: 46.99287746924297; longitude: 6.92922833185913" scale="0.5 0.5 0.5" rotation="0 0 0"
+				<a-entity gps-new-entity-place="latitude: 46.7875967; longitude: 6.636881" scale="0.5 0.5 0.5" rotation="0 0 0"
 					look-at="[gps-new-camera]" gltf-model="./public/windTurbine.glb" rotate-this-with-the-compass-readings></a-entity>
 
 			</a-scene> -->
