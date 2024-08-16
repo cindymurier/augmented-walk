@@ -15,53 +15,59 @@ const currentLocation = {
 
 const destinations = [
 	{
-		name: "Police du Lac",
-		latitude: 46.787017,
-		longitude: 6.6375214,
+		name: "Test",
+		latitude: 46.992877,
+		longitude: 6.929195,
 		description:
-			"<h1>Bravoooo !!! </h1><br>Vous êtes bien arrivé à la police du lac !",
+			"<h1>Congratulations! </h1><br>You have found Eole, the first point of interest! ",
 		decouvert: false,
 	},
 	{
-		name: "Yverdon",
-		latitude: 46.7807198,
-		longitude: 6.6404726,
-		description: "Mouais, ca vaut pas le détour ...",
+		name: "Eole",
+		latitude: 46.506291,
+		longitude: 6.625896,
+		description:
+			"<h1>Congratulations! </h1><br>You have found Eole, the first point of interest! ",
 		decouvert: false,
 	},
 	{
-		name: "Paris",
-		latitude: 48.8682824,
-		longitude: 2.3431288,
-		description: "This is Paris !!",
+		name: "Gravière de l'Isle",
+		latitude: 46.508367,
+		longitude: 6.620456,
+		description:
+			"<h1>Congratulations! </h1><br>You have found the Gravière de l'Isle, the second point of interest! ",
 		decouvert: false,
 	},
 	{
-		name: "Bangkok",
-		latitude: 13.7523918,
-		longitude: 100.5141913,
-		description: "Home sweet home :-)",
+		name: "Petit Train de Vidy",
+		latitude: 46.513632,
+		longitude: 6.607949,
+		description:
+			"<h1>Congratulations! </h1><br>You have found the Petit Train de Vidy, the third point of interest! ",
 		decouvert: false,
 	},
 	{
-		name: "Montreal",
-		latitude: 45.500947,
-		longitude: -73.597737,
-		description: "Fait froid !",
+		name: "Pyramides de Vidy",
+		latitude: 46.511662,
+		longitude: 6.603314,
+		description:
+			"<h1>Congratulations! </h1><br>You have found the Pyramides de Vidy, the fourth point of interest! ",
 		decouvert: false,
 	},
 	{
-		name: "Kansas City",
-		latitude: 39.099912,
-		longitude: -94.581213,
-		description: "Fait chaud !",
+		name: "International Olympic Committee",
+		latitude: 46.5179,
+		longitude: 6.59702,
+		description:
+			"<h1>Congratulations! </h1><br>You have found the International Olympic Committee, the fifth point of interest! ",
 		decouvert: false,
 	},
 	{
-		name: "St Louis",
-		latitude: 38.627089,
-		longitude: -90.200203,
-		description: "On se les gèles :-(",
+		name: "EPFL Pavilions>",
+		latitude: 46.518265,
+		longitude: 6.565823,
+		description:
+			"<h1>Congratulations! </h1><br>You have found EPFL Pavilions, the last point of interest! ",
 		decouvert: false,
 	},
 ];
