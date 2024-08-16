@@ -8,8 +8,13 @@ const goalGoute = new goute(0, 0, 250); // La goute "but"
 const goutes = []; // Les quesques goutes (4) qui bougent
 
 const currentLocation = {
+<<<<<<< HEAD
 	longitude: 12345678,
 	latitude: 987654,
+=======
+	longitude: 0,
+	latitude: 0,
+>>>>>>> c2a8f1fa3b047ca0e925bdf3e42cd7ae69207228
 };
 
 const destinations = [
@@ -118,11 +123,14 @@ function setDestination(name, next = false) {
 }
 
 function startWatchLocation() {
+<<<<<<< HEAD
 	if (this.whatchId != null) {
 		// already watching ...
 		return;
 	}
 
+=======
+>>>>>>> c2a8f1fa3b047ca0e925bdf3e42cd7ae69207228
 	const options = {
 		enableHighAccuracy: true,
 		maximumAge: 30000,
