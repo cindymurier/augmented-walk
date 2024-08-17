@@ -1,12 +1,12 @@
 let canvas;
 let ctx;
-//pour avoir un événement toute les secondes
+// Pour avoir un événement toutes les secondes
 let tickTime = 0;
-let fake_north = 0;
-let canvas_rotation = 0;
+let fakeNorth = 0;
+let canvasRotation = 0;
 let deviceOrientation = 0;
-const goalGoute = new goute(0, 0, 250); // La goute "but"
-const goutes = []; // Les quesques goutes (4) qui bougent
+const goalCircle = new Circle(0, 0, 250); // Le cercle "but"
+const circles = []; // Les cercles (4) qui bougent
 
 const currentLocation = {
 	longitude: 0,
@@ -15,20 +15,12 @@ const currentLocation = {
 
 const destinations = [
 	{
-		name: "Test",
-		latitude: 46.992877,
-		longitude: 6.929195,
-		description:
-			"<h1>Congratulations! </h1><br>You have found Eole, the first point of interest! ",
-		decouvert: false,
-	},
-	{
 		name: "Eole",
 		latitude: 46.506291,
 		longitude: 6.625896,
 		description:
 			"<h1>Congratulations! </h1><br>You have found Eole, the first point of interest! ",
-		decouvert: false,
+		discovered: false,
 	},
 	{
 		name: "Gravière de l'Isle",
@@ -36,7 +28,7 @@ const destinations = [
 		longitude: 6.620456,
 		description:
 			"<h1>Congratulations! </h1><br>You have found the Gravière de l'Isle, the second point of interest! ",
-		decouvert: false,
+		discovered: false,
 	},
 	{
 		name: "Petit Train de Vidy",
@@ -44,7 +36,7 @@ const destinations = [
 		longitude: 6.607949,
 		description:
 			"<h1>Congratulations! </h1><br>You have found the Petit Train de Vidy, the third point of interest! ",
-		decouvert: false,
+		discovered: false,
 	},
 	{
 		name: "Pyramides de Vidy",
@@ -52,7 +44,7 @@ const destinations = [
 		longitude: 6.603314,
 		description:
 			"<h1>Congratulations! </h1><br>You have found the Pyramides de Vidy, the fourth point of interest! ",
-		decouvert: false,
+		discovered: false,
 	},
 	{
 		name: "International Olympic Committee",
@@ -60,38 +52,42 @@ const destinations = [
 		longitude: 6.59702,
 		description:
 			"<h1>Congratulations! </h1><br>You have found the International Olympic Committee, the fifth point of interest! ",
-		decouvert: false,
+		discovered: false,
 	},
 	{
-		name: "EPFL Pavilions>",
+		name: "EPFL Pavilions",
 		latitude: 46.518265,
 		longitude: 6.565823,
 		description:
 			"<h1>Congratulations! </h1><br>You have found EPFL Pavilions, the last point of interest! ",
-		decouvert: false,
+		discovered: false,
 	},
 ];
 
-//avoir uniquement l'écran qui bouge
+// Fonction pour faire tourner le canevas
 function rotateCanvas(angleDeg) {
-	canvas_rotation = angleDeg; // juste pour info
+	canvasRotation = angleDeg; // juste pour info
 	ctx.translate(canvas.width / 2, canvas.height / 2);
 	ctx.rotate((angleDeg * Math.PI) / 180);
 	ctx.translate(-canvas.width / 2, -canvas.height / 2);
 }
 
+// Fonction pour effacer le canevas
 function clearCanvas() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+// Réinitialise la destination à la première
 function reset() {
 	setDestination(destinations[0].name, false);
 }
 
+// Passe à la destination suivante
 function next() {
 	setDestination(currentDestination.name, true);
 }
 
+// Définit la destination actuelle
 function setDestination(name, next = false) {
 	let takeNext = false;
 	for (let oneDest of destinations) {
@@ -103,28 +99,29 @@ function setDestination(name, next = false) {
 				currentDestination = oneDest;
 				window.localStorage.setItem(
 					"currentDestination",
-					JSON.stringify({ name: oneDest.name, decouvert: false })
+					JSON.stringify({ name: oneDest.name, discovered: false })
 				);
 				break;
 			}
 		}
 	}
 
-	// To get there in 60 seconds in case of simulation
+	// Pour y arriver en 60 secondes en cas de simulation
 	this.stepToDestX =
 		(currentDestination.longitude - currentLocation.longitude) / 60;
 	this.stepToDestY =
 		(currentDestination.latitude - currentLocation.latitude) / 60;
 
-	goalGoute.setPosition(canvas.width / 2, -1000);
-	positionGoutes();
-	butAtteint = false;
+	goalCircle.setPosition(canvas.width / 2, -1000);
+	positionCircles();
+	destinationReached = false;
 	document.getElementById("finished").classList.add("hidden");
 }
 
+// Commence à surveiller la position de l'utilisateur
 function startWatchLocation() {
-	if (this.whatchId != null) {
-		// already watching ...
+	if (this.watchId != null) {
+		// Déjà en train de surveiller...
 		return;
 	}
 
@@ -134,7 +131,7 @@ function startWatchLocation() {
 		timeout: 27000,
 	};
 
-	this.whatchId = navigator.geolocation.watchPosition(
+	this.watchId = navigator.geolocation.watchPosition(
 		(position) => {
 			console.log("Updating position");
 			setCurrentLocation(position.coords);
@@ -144,49 +141,53 @@ function startWatchLocation() {
 	);
 }
 
+// Arrête la surveillance de la position de l'utilisateur
 function stopWatchLocation() {
-	if (this.whatchId == null) {
+	if (this.watchId == null) {
 		return;
 	}
-	navigator.geolocation.clearWatch(this.whatchId);
-	this.whatchId = null;
+	navigator.geolocation.clearWatch(this.watchId);
+	this.watchId = null;
 }
 
-function arrivee() {
-	butAtteint = true;
-	goalGoute.setPosition(canvas.width / 2, canvas.height / 2);
+// Gestion de l'arrivée à la destination
+function arrive() {
+	destinationReached = true;
+	goalCircle.setPosition(canvas.width / 2, canvas.height / 2);
 
-	goutes.length = 0; // On vide le tableau des goutes
+	circles.length = 0; // On vide le tableau des cercles
 	window.localStorage.setItem(
 		"currentDestination",
-		JSON.stringify({ name: currentDestination.name, decouvert: true })
+		JSON.stringify({ name: currentDestination.name, discovered: true })
 	);
 	document.getElementById("message").innerHTML = currentDestination.description;
 	document.getElementById("finished").classList.remove("hidden");
 }
 
+// Met à jour la position actuelle
 function setCurrentLocation(location) {
 	currentLocation.latitude = location.latitude;
 	currentLocation.longitude = location.longitude;
 
-	let distance = Math.round(distanceToDest(currentDestination));
+	let distance = Math.round(distanceToDestination(currentDestination));
 	if (distance < 5) {
-		// a 5 metres du but, on est au but !
+		// à 5 mètres du but, on est au but !
 		currentLocation.latitude = currentDestination.latitude;
 		currentLocation.longitude = currentDestination.longitude;
-		arrivee();
+		arrive();
 	} else if (distance < 40) {
-		goalGoute.setPosition(
+		goalCircle.setPosition(
 			ctx.canvas.width / 2,
 			canvas.height / 2 - (distance * canvas.height) / 20
 		);
 	} else {
-		goalGoute.setPosition(ctx.canvas.width / 2, -1000);
+		goalCircle.setPosition(ctx.canvas.width / 2, -1000);
 	}
 }
 
+// Écoute les changements d'orientation de l'appareil
 function startDeviceOrientationListener() {
-	window.addEventListener("deviceorientationabsolute", manageCompass, true); // Not accurate
+	window.addEventListener("deviceorientationabsolute", manageCompass, true); // Non précis
 	//window.addEventListener("deviceorientation", manageCompass, true);
 
 	function manageCompass(event) {
@@ -194,26 +195,28 @@ function startDeviceOrientationListener() {
 			deviceOrientation = event.webkitCompassHeading + 180;
 		} else {
 			deviceOrientation = -(event.alpha + (event.beta * event.gamma) / 90);
-			deviceOrientation -= Math.floor(deviceOrientation / 360) * 360; // Wrap to range [0,360]
+			deviceOrientation -= Math.floor(deviceOrientation / 360) * 360; // Réduction à la plage [0,360]
 		}
 	}
 }
 
+// Définit le nord simulé
 function setNorth() {
-	fake_north = deviceOrientation;
+	fakeNorth = deviceOrientation;
 }
 
 /*
  * https://www.movable-type.co.uk/scripts/latlong.html
+ * Calcul de la distance à la destination
  */
-function distanceToDest(dest) {
-	const R = 6371e3; // metres
+function distanceToDestination(dest) {
+	const R = 6371e3; // mètres
 	const lat1 = currentLocation.latitude;
 	const lon1 = currentLocation.longitude;
 	const lat2 = dest.latitude;
 	const lon2 = dest.longitude;
 
-	const φ1 = (lat1 * Math.PI) / 180; // φ, λ in radians
+	const φ1 = (lat1 * Math.PI) / 180; // φ, λ en radians
 	const φ2 = (lat2 * Math.PI) / 180;
 	const Δφ = ((lat2 - lat1) * Math.PI) / 180;
 	const Δλ = ((lon2 - lon1) * Math.PI) / 180;
@@ -223,15 +226,15 @@ function distanceToDest(dest) {
 		Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
 	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-	const d = R * c; // in metres
+	const d = R * c; // en mètres
 	return d;
 }
 
 /*
  *  https://www.movable-type.co.uk/scripts/latlong.html
- *  see also : https://www.igismap.com/formula-to-find-bearing-or-heading-angle-between-two-points-latitude-longitude/
+ *  Calcul de l'angle à la destination
  */
-function angleToDest(dest) {
+function angleToDestination(dest) {
 	let dL = dest.longitude - currentLocation.longitude;
 	dL = (dL * Math.PI) / 180;
 
@@ -253,12 +256,13 @@ function angleToDest(dest) {
 	return angle;
 }
 
+// Affiche des informations sur l'écran
 function showInfos() {
 	var html =
 		"<span>Device orientation : " +
-		Math.round(deviceOrientation - fake_north) +
+		Math.round(deviceOrientation - fakeNorth) +
 		"° (corr : " +
-		Math.round(fake_north) +
+		Math.round(fakeNorth) +
 		"°) <br>";
 	html +=
 		"Current location : " +
@@ -268,22 +272,23 @@ function showInfos() {
 		"<br>";
 	html += "Current destination : " + currentDestination.name + "<br>";
 	html +=
-		"Absolute angle to dest : " +
-		Math.round(angleToDest(currentDestination)) +
+		"Absolute angle to destination : " +
+		Math.round(angleToDestination(currentDestination)) +
 		"°<br>";
-	html += "Canvas rotation : " + Math.round(canvas_rotation) + "°<br>";
+	html += "Canvas rotation : " + Math.round(canvasRotation) + "°<br>";
 	html +=
 		"Distance to destination : " +
-		Math.round(distanceToDest(currentDestination)) +
+		Math.round(distanceToDestination(currentDestination)) +
 		"m<br> ";
 	html += "<span>";
 
 	document.getElementById("info").innerHTML = html;
 }
 
+// Initialisation du canevas
 function initialize(canvasId) {
 	inSimulation = false;
-	butAtteint = false;
+	destinationReached = false;
 	tickTime = Date.now();
 	canvas = document.getElementById(canvasId);
 	ctx = canvas.getContext("2d");
@@ -298,8 +303,8 @@ function initialize(canvasId) {
 	window.onresize = function () {
 		ctx.canvas.width = window.innerWidth;
 		ctx.canvas.height = window.innerHeight;
-		for (var uneGoute of goutes) {
-			uneGoute.center.x = canvas.width / 2;
+		for (var aCircle of circles) {
+			aCircle.center.x = canvas.width / 2;
 		}
 	};
 
@@ -317,19 +322,20 @@ function initialize(canvasId) {
 			"</button><br></br>";
 	});
 	document.getElementById("destinations").innerHTML = html;
-	let lastDestionation = null;
+	let lastDestination = null;
 	try {
-		lastDestionation = JSON.parse(
+		lastDestination = JSON.parse(
 			window.localStorage.getItem("currentDestination")
 		);
 	} catch (error) {}
-	if (lastDestionation != null && lastDestionation.name != null) {
-		setDestination(lastDestionation.name, lastDestionation.decouvert);
+	if (lastDestination != null && lastDestination.name != null) {
+		setDestination(lastDestination.name, lastDestination.discovered);
 	} else {
 		setDestination("Police du Lac");
 	}
 }
 
+// Active ou désactive la simulation
 function toggleSimulation() {
 	inSimulation = !inSimulation;
 	let button = document.getElementById("toggleSimulation");
@@ -350,13 +356,14 @@ function toggleSimulation() {
 	}
 }
 
-// A clock for every seconds
+// Une horloge qui s'exécute toutes les secondes
 function tick() {
-	if (inSimulation && !butAtteint) {
+	if (inSimulation && !destinationReached) {
 		move();
 	}
 }
 
+// Déplace la position actuelle vers la destination
 function move() {
 	let location = Object.assign({}, currentLocation); // clone
 	location.longitude += this.stepToDestX;
@@ -364,30 +371,32 @@ function move() {
 	setCurrentLocation(location);
 }
 
-function positionGoutes() {
-	// Let's assume 1/2 the size of the device (tablet) is 20 meters.
-	let distancePourTaille = Math.round(distanceToDest(currentDestination));
+// Positionne les cercles sur le canevas
+function positionCircles() {
+	// Supposons que 1/2 de la taille de l'appareil (tablette) équivaut à 20 mètres.
+	let distanceForSize = Math.round(distanceToDestination(currentDestination));
 
-	const nbGouteVisible = 2;
-	this.deviceDistanceGoute = canvas.height / 2 / nbGouteVisible;
+	const nbVisibleCircles = 2;
+	this.deviceDistanceCircle = canvas.height / 2 / nbVisibleCircles;
 	/*
-	 * Créations des goutes qui bougent :
+	 * Création des cercles qui bougent :
 	 */
-	goutes.length = 0;
+	circles.length = 0;
 	for (let i = 1; i <= 4; i++) {
-		let uneGoute = new goute(
+		let aCircle = new Circle(
 			canvas.width / 2,
-			canvas.height / 2 - i * this.deviceDistanceGoute,
-			getGouteSize(distancePourTaille)
+			canvas.height / 2 - i * this.deviceDistanceCircle,
+			getCircleSize(distanceForSize)
 		);
-		uneGoute.setMovement(0, 2);
-		goutes.push(uneGoute);
+		aCircle.setMovement(0, 2);
+		circles.push(aCircle);
 	}
 }
 
+// Rafraîchit le canevas à chaque frame
 function refresh() {
 	if (Date.now() - tickTime > 1000) {
-		// every 1 seconds
+		// toutes les 1 secondes
 		tickTime = Date.now();
 		tick();
 	}
@@ -397,7 +406,7 @@ function refresh() {
 	showInfos();
 
 	rotateCanvas(
-		angleToDest(currentDestination) - (deviceOrientation - fake_north)
+		angleToDestination(currentDestination) - (deviceOrientation - fakeNorth)
 	);
 
 	ctx.beginPath();
@@ -406,44 +415,44 @@ function refresh() {
 	ctx.fill();
 	ctx.closePath();
 
-	for (let uneGoute of goutes) {
-		let distancePourTaille = Math.round(distanceToDest(currentDestination));
-		if (uneGoute.center.y > canvas.height / 2) {
-			uneGoute.setMovement(0, 0);
-			uneGoute.disapear();
+	for (let aCircle of circles) {
+		let distanceForSize = Math.round(distanceToDestination(currentDestination));
+		if (aCircle.center.y > canvas.height / 2) {
+			aCircle.setMovement(0, 0);
+			aCircle.disapear();
 		}
 
-		if (uneGoute.getSize() <= 1) {
-			goutes.shift();
-			let uneGoute = new goute(
+		if (aCircle.getSize() <= 1) {
+			circles.shift();
+			let aCircle = new Circle(
 				canvas.width / 2,
-				canvas.height / 2 - 4 * this.deviceDistanceGoute,
-				getGouteSize(distancePourTaille)
+				canvas.height / 2 - 4 * this.deviceDistanceCircle,
+				getCircleSize(distanceForSize)
 			);
-			uneGoute.setMovement(0, 2);
-			goutes.push(uneGoute);
+			aCircle.setMovement(0, 2);
+			circles.push(aCircle);
 			continue;
 		}
-		// Ne pas afficher les goutes "sous" la goal goute
-		if (uneGoute.center.y > goalGoute.center.y + goalGoute.size) {
-			uneGoute.setSize(getGouteSize(distancePourTaille));
-			uneGoute.display(ctx);
+		// Ne pas afficher les cercles "sous" le cercle but
+		if (aCircle.center.y > goalCircle.center.y + goalCircle.size) {
+			aCircle.setSize(getCircleSize(distanceForSize));
+			aCircle.display(ctx);
 		}
 	}
 
-	goalGoute.display(ctx);
+	goalCircle.display(ctx);
 
-	// Reset transformation matrix to the identity matrix
+	// Réinitialise la matrice de transformation
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-	//rond blanc au centre
+	// Rond blanc au centre
 	ctx.beginPath();
 	ctx.fillStyle = "#FFFFFF";
 	ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, 2 * Math.PI);
 	ctx.fill();
 	ctx.closePath();
 
-	//rond rouge au centre
+	// Rond rouge au centre
 	ctx.beginPath();
 	ctx.fillStyle = "#FF0000";
 	ctx.arc(canvas.width / 2, canvas.height / 2, 40, 0, 2 * Math.PI);
@@ -451,7 +460,8 @@ function refresh() {
 	ctx.closePath();
 }
 
-function getGouteSize(distanceToDest) {
+// Calcule la taille du cercle en fonction de la distance à la destination
+function getCircleSize(distanceToDest) {
 	let size = 10;
 	if (distanceToDest < 100) {
 		size = 50;

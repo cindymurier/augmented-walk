@@ -1,16 +1,18 @@
 "use strict";
 
-let whatchId = null;
+let watchId = null;
 let arCreated = false;
 
+// Latitude et Longitude actuelle de l'utilisateur
 const currentLocation = {
 	longitude: 0,
 	latitude: 0,
 };
 
+// Démarre la surveillance de la position géographique
 function startWatchLocation() {
-	if (whatchId != null) {
-		// already watching ...
+	if (watchId != null) {
+		// Si la surveillance est déjà en cours, ne rien faire
 		return;
 	}
 
@@ -20,30 +22,33 @@ function startWatchLocation() {
 		timeout: 27000,
 	};
 
-	whatchId = navigator.geolocation.watchPosition(
+	watchId = navigator.geolocation.watchPosition(
 		(position) => {
 			console.log("Updating position");
 			currentLocation.latitude = position.coords.latitude;
 			currentLocation.longitude = position.coords.longitude;
 
-			createAR(); // once for all !
+			createAR(); // Crée l'élément AR une seule fois
 
 			console.log(`Latitude: ${currentLocation.latitude}`);
 			console.log(`Longitude: ${currentLocation.longitude}`);
 		},
-		null,
+		null, // Gestion des erreurs non définie ici
 		options
 	);
 }
 
+// Arrête la surveillance de la position géographique
 function stopWatchLocation() {
-	if (whatchId == null) {
+	if (watchId == null) {
+		// Si la surveillance n'est pas en cours, ne rien faire
 		return;
 	}
-	navigator.geolocation.clearWatch(whatchId);
-	whatchId = null;
+	navigator.geolocation.clearWatch(watchId);
+	watchId = null;
 }
 
+// Ajouter le modèle 3D
 function createAR() {
 	if (arCreated) {
 		stopWatchLocation();
@@ -73,5 +78,6 @@ function createAR() {
 	entity.setAttribute("look-at", "[gps-new-camera]");
 	entity.setAttribute("gltf-model", "/public/windTurbine1.glb");
 
+	// Ajoute l'entité AR à la scène
 	document.querySelector("a-scene").appendChild(entity);
 }
