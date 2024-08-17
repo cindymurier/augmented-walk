@@ -59,7 +59,7 @@ function createAR() {
 	const entity = document.createElement("a-entity");
 
 	entity.setAttribute("gps-new-entity-place", {
-		latitude: currentLocation.latitude,
+		latitude: currentLocation.latitude + 0.00001,
 		longitude: currentLocation.longitude,
 	});
 
@@ -76,7 +76,7 @@ function createAR() {
 	});
 
 	entity.setAttribute("look-at", "[gps-new-camera]");
-	entity.setAttribute("gltf-model", "/public/windTurbine1.glb");
+	entity.setAttribute("gltf-model", "/public/windTurbine2.glb");
 
 	// Ajoute l'entité AR à la scène
 	document.querySelector("a-scene").appendChild(entity);
