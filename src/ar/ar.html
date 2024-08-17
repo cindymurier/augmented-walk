@@ -31,21 +31,16 @@
 		</script>
 	</head>
 	<body >
-		
-		
 		<div class="ar" id="ar">
-			<!-- <a-scene embedded vr-mode-ui='enabled: false'
-				arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
-				renderer='antialias: true; alpha: true'>
+			<a-scene embedded vr-mode-ui='enabled: false'
+			arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
+			renderer='antialias: true; alpha: true'>
+			<a-camera gps-new-camera='gpsMinDistance: 5' rotation-reader rotation scale visible look-control wasd-control> </a-camera>
+
+			<a-entity gps-new-entity-place="latitude: 46.7795968; longitude: 6.6420736" scale="0.5 0.5 0.5" rotation="0 0 0"
+				look-at="[gps-new-camera]" gltf-model="/public/windTurbine2.glb" rotate-this-with-the-compass-readings></a-entity>
 	
-		
-			<a-camera gps-new-camera='gpsMinDistance: 5' rotation-reader rotation scale visible look-control
-					wasd-control> </a-camera>
-
-				<a-entity gps-new-entity-place="latitude: 46.7875967; longitude: 6.636881" scale="0.5 0.5 0.5" rotation="0 0 0"
-					look-at="[gps-new-camera]" gltf-model="./public/windTurbine.glb" rotate-this-with-the-compass-readings></a-entity>
-
-			</a-scene> -->
+		</a-scene>
 		</div>
 			
     <body>

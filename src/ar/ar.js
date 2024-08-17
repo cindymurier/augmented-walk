@@ -46,35 +46,32 @@ function stopWatchLocation() {
 
 function createAR() {
 	if (arCreated) {
+		stopWatchLocation();
 		return;
 	}
 	arCreated = true;
-	let html = "<a-scene embedded vr-mode-ui='enabled: false' ";
-	html +=
-		"arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' ";
-	html += "renderer='antialias: true; alpha: true'> ";
 
-	html +=
-		"<a-camera gps-new-camera='gpsMinDistance: 5' rotation-reader rotation scale visible look-control ";
-	html += "wasd-control> </a-camera>";
+	const entity = document.createElement("a-entity");
 
-	html +=
-		'<a-entity gps-new-entity-place="latitude: ' +
-		currentLocation.latitude +
-		"; longitude: " +
-		currentLocation.longitude +
-		'" scale="0.5 0.5 0.5" rotation="0 0 0"';
+	entity.setAttribute("gps-new-entity-place", {
+		latitude: currentLocation.latitude,
+		longitude: currentLocation.longitude,
+	});
 
-	// html +=
-	// 	'<a-entity gps-new-entity-place="latitude: ' +
-	// 	"46.7875967" +
-	// 	"; longitude: " +
-	// 	"6.636881" +
-	// 	'" scale="0.5 0.5 0.5" rotation="0 0 0" ';
-	html +=
-		'look-at="[gps-new-camera]" gltf-model="../public/windTurbine2.glb" rotate-this-with-the-compass-readings></a-entity>';
+	entity.setAttribute("scale", {
+		x: 0.5,
+		y: 0.5,
+		z: 0.5,
+	});
 
-	html += "</a-scene>";
-	alert(html);
-	document.getElementById("ar").innerHTML = html;
+	entity.setAttribute("rotation", {
+		x: 0,
+		y: 0,
+		z: 0,
+	});
+
+	entity.setAttribute("look-at", "[gps-new-camera]");
+	entity.setAttribute("gltf-model", "/public/windTurbine1.glb");
+
+	document.querySelector("a-scene").appendChild(entity);
 }
