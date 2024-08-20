@@ -33,7 +33,7 @@ function startWatchLocation() {
 			console.log(`Latitude: ${currentLocation.latitude}`);
 			console.log(`Longitude: ${currentLocation.longitude}`);
 		},
-		null, // Gestion des erreurs non définie ici
+		null, // Gestion des erreurs
 		options
 	);
 }

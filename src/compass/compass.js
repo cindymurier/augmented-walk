@@ -5,7 +5,7 @@ let tickTime = 0;
 let fakeNorth = 0;
 let canvasRotation = 0;
 let deviceOrientation = 0;
-const goalCircle = new Circle(0, 0, 250); // Le cercle "but"
+const goalCircle = new Circle(0, 0, 250); // Le cercle "but", de l'arrivée au lieu
 const circles = []; // Les cercles (4) qui bougent
 
 const currentLocation = {
@@ -66,7 +66,7 @@ const destinations = [
 
 // Fonction pour faire tourner le canevas
 function rotateCanvas(angleDeg) {
-	canvasRotation = angleDeg; // juste pour info
+	canvasRotation = angleDeg;
 	ctx.translate(canvas.width / 2, canvas.height / 2);
 	ctx.rotate((angleDeg * Math.PI) / 180);
 	ctx.translate(-canvas.width / 2, -canvas.height / 2);
@@ -195,7 +195,7 @@ function startDeviceOrientationListener() {
 			deviceOrientation = event.webkitCompassHeading + 180;
 		} else {
 			deviceOrientation = -(event.alpha + (event.beta * event.gamma) / 90);
-			deviceOrientation -= Math.floor(deviceOrientation / 360) * 360; // Réduction à la plage [0,360]
+			deviceOrientation -= Math.floor(deviceOrientation / 360) * 360;
 		}
 	}
 }
@@ -378,9 +378,8 @@ function positionCircles() {
 
 	const nbVisibleCircles = 2;
 	this.deviceDistanceCircle = canvas.height / 2 / nbVisibleCircles;
-	/*
-	 * Création des cercles qui bougent :
-	 */
+
+	// Création des cercles qui bougent :
 	circles.length = 0;
 	for (let i = 1; i <= 4; i++) {
 		let aCircle = new Circle(
