@@ -331,7 +331,7 @@ function initialize(canvasId) {
 	if (lastDestination != null && lastDestination.name != null) {
 		setDestination(lastDestination.name, lastDestination.discovered);
 	} else {
-		setDestination(setDestination[0].name);
+		setDestination(destinations[0].name);
 	}
 }
 
