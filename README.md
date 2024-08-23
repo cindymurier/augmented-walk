@@ -26,7 +26,7 @@ Le projet a été déployé sur Netlify et est accessible à l'adresse suivante 
    ```bash
    git clone https://github.com/cindymurier/augmented-walk.git
    ```
-3. Testez le projet directement via localhost en lançant un serveur local.
+3. Testez le projet directement via localhost en lançant un serveur local. Par exemple, vous pouvez utiliser l'extension Live Server sur Visual Studio Code.
 
    **OU**
 
