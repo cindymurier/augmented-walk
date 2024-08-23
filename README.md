@@ -14,6 +14,10 @@ Le développement de l’écran de réalité augmentée a été réalisé à l�
 
 Ce projet utilise A-Frame (version 1.4.0) et AR.js (version 3.4.5). Il est important d'utiliser ces deux versions ensemble pour assurer la compatibilité.
 
+### Déploiement
+
+Le projet a été déployé sur Netlify et est accessible à l'adresse suivante : [https://augmented-walk.netlify.app](https://augmented-walk-git.netlify.app/)
+
 ## Quickstart
 
 1. Créez un dossier pour votre projet et déplacez-vous dedans.
