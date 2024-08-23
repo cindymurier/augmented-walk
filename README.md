@@ -39,6 +39,6 @@ Ce projet utilise A-Frame (version 1.4.0) et AR.js (version 3.4.5). Il est impor
 
 Assurez-vous que le navigateur utilisé pour les tests est compatible avec l'[API DeviceOrientation](https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event).
 
-## Notes pour la scène AR
+## Notes pour l'écran AR
 
 Vérifiez que le navigateur utilisé soit compatible avec l'[API WebXR](https://caniuse.com/webxr).
