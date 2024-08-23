@@ -6,7 +6,7 @@ Ce projet a été développé dans le cadre d'un travail de Bachelor. Deux proto
 
 Le développement de l'écran de boussole a été entièrement réalisé en JavaScript, en utilisant des API Web telles que DeviceOrientation, Geolocation et LocalStorage. Ces technologies permettent de récupérer la géolocalisation de l’utilisateur, l’orientation de son appareil, et de stocker localement les progrès de l’utilisateur afin de l’orienter vers le point d’intérêt suivant. 
 
-Initialement, il n’était pas nécessaire d’utiliser des formes en 3D, c’est pourquoi les éléments visuels ont été créés avec l’objet `CanvasRenderingContext2D`. L’objectif de cet écran est de prototyper la boussole qui guidera l’utilisateur vers les points d’intérêt.
+Initialement, il n’était pas nécessaire d’utiliser des formes en 3D, c’est pourquoi les éléments visuels ont été créés avec l’objet CanvasRenderingContext2D. L’objectif de cet écran est de prototyper la boussole qui guidera l’utilisateur vers les points d’intérêt.
 
 ### Écran de réalité augmentée (RA)
 
