@@ -26,18 +26,21 @@ Le projet a été déployé sur Netlify et est accessible à l'adresse suivante 
    ```bash
    git clone https://github.com/cindymurier/augmented-walk.git
    ```
+3. Testez le projet directement via localhost en lançant un serveur local.
+3. Vous pouvez tester le projet directement en local en utilisant un serveur local sur `localhost`.
 
-3. Installez les dépendances :
+   **OU**
+
+4. Installez les dépendances nécessaires avec la commande suivante :
 
    ```bash
    npm install
    ```
 
-4. Lancez le développement :
+5. Lancez le projet en mode développement avec la commande :
 
    ```bash
    npm run dev
-   ```
 
 ## Notes pour l'écran de boussole
 
