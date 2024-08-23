@@ -1,6 +1,6 @@
 # augmented-walk
 
-Ce projet a été développé dans le cadre d'un projet de bachelor. Deux prototypes d'écrans (un écran de boussole et un écran de réalité augmentée) ont été conçus pour une application de balade augmentée.
+Ce projet a été développé dans le cadre d'un travail de Bachelor. Deux prototypes d'écrans (un écran de boussole et un écran de réalité augmentée) ont été conçus pour une application de balade augmentée.
 
 ### Écran de Boussole
 
@@ -37,8 +37,8 @@ Ce projet utilise A-Frame (version 1.4.0) et AR.js (version 3.4.5). Il est impor
 
 ## Notes pour l'écran de boussole
 
-Assurez-vous que le navigateur utilisé pour les tests est compatible avec l'API DeviceOrientation : [MDN DeviceOrientation](https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event)
+Assurez-vous que le navigateur utilisé pour les tests est compatible avec l'[API DeviceOrientation](https://developer.mozilla.org/en-US/docs/Web/API/Window/deviceorientationabsolute_event).
 
 ## Notes pour la scène AR
 
-Vérifiez que le navigateur utilisé soit compatible avec l'API WebXR : [Can I Use WebXR](https://caniuse.com/webxr)
+Vérifiez que le navigateur utilisé soit compatible avec l'[API WebXR](https://caniuse.com/webxr).
